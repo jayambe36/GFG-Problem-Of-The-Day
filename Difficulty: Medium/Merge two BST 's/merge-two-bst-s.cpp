@@ -29,7 +29,7 @@ Node* buildTree(string str) {
     for (string str; iss >> str;)
         ip.push_back(str);
 
-    // Create the root of the tree
+    // Create the root of the tree.....
     Node* root = new Node(stoi(ip[0]));
 
     // Push the root to the queue
@@ -93,47 +93,29 @@ struct Node {
 };
 */
 
-
 class Solution {
   public:
     // Function to return a list of integers denoting the node
     // values of both the BST in a sorted order.
-    void inorder(Node* root, vector<int> & vec){
-        
-        if(root == NULL){
-            return;
-        }
-        
-        inorder(root->left, vec);
-        vec.push_back(root->data);
-        inorder(root->right, vec);
+    vector<int> ans;
+    void inorder(Node* root)
+    {
+        if(root==NULL)
+        return;
+        inorder(root->left);
+        ans.push_back(root->data);
+        inorder(root->right);
     }
-    
     vector<int> merge(Node *root1, Node *root2) {
         // Your code here
+        inorder(root1);
+        inorder(root2);
+        sort(ans.begin(),ans.end());
+        return ans;
         
-        // just try...
-        
-        vector<int> A;
-        vector<int> B;
-        
-        inorder(root1, A);
-        inorder(root2, B);
-        
-        int n = A.size();
-        int m = B.size();
-        
-        vector<int> AB;
-        
-        AB.reserve( A.size() + B.size() ); // preallocate memory
-        AB.insert( AB.end(), A.begin(), A.end() );
-        AB.insert( AB.end(), B.begin(), B.end() );
-        
-        sort(AB.begin(), AB.end());
-        
-        return AB;
     }
 };
+
 
 
 //{ Driver Code Starts.
