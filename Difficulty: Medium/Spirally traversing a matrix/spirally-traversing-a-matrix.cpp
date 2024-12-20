@@ -6,57 +6,47 @@ using namespace std;
 // } Driver Code Ends
 class Solution {
   public:
-    
-    vector<int> spirallyTraverse(vector<vector<int> > &matrix) {
-        int n=matrix.size();
-        int m=matrix[0].size();
-    
-        vector<int> ans;
-        
-        int left=0;
-        int right=m-1;
-        int top=0;
-        int bottom=n-1;
-        
-        while(left<=right && top<=bottom)
-        {
-            //left to right
-            for(int i=left;i<=right;i++)
-            {
-                ans.push_back(matrix[top][i]);
+    vector<int> spirallyTraverse(vector<vector<int>> &mat) {
+        vector<int> result;
+        if (mat.empty()) return result;
+
+        int top = 0, bottom = mat.size() - 1;
+        int left = 0, right = mat[0].size() - 1;
+
+        while (top <= bottom && left <= right) {
+            // Traverse from left to right along the top row
+            for (int i = left; i <= right; ++i) {
+                result.push_back(mat[top][i]);
             }
             top++;
-            //top to bottom
-            
-            for(int i=top;i<=bottom;i++)
-            {
-                ans.push_back(matrix[i][right]);
+
+            // Traverse from top to bottom along the right column
+            for (int i = top; i <= bottom; ++i) {
+                result.push_back(mat[i][right]);
             }
             right--;
-            
-            if(!(left<=right && top<=bottom))
-            break;
-            
-            //right to left
-            for(int i=right;i>=left;i--)
-            {
-                ans.push_back(matrix[bottom][i]);
+
+            // Traverse from right to left along the bottom row (if any rows remain)
+            if (top <= bottom) {
+                for (int i = right; i >= left; --i) {
+                    result.push_back(mat[bottom][i]);
+                }
+                bottom--;
             }
-            bottom--;
-            
-            //bottom to top
-            for(int i=bottom;i>=top;i--)
-            {
-                ans.push_back(matrix[i][left]);
+
+            // Traverse from bottom to top along the left column (if any columns remain)
+            if (left <= right) {
+                for (int i = bottom; i >= top; --i) {
+                    result.push_back(mat[i][left]);
+                }
+                left++;
             }
-            left++;
-            
         }
-        return ans;
+
+        return result;
     }
-
-
 };
+
 
 //{ Driver Code Starts.
 int main() {
@@ -66,9 +56,10 @@ int main() {
     while (t--) {
         int r, c;
         cin >> r >> c;
-        vector<vector<int>> matrix(r, vector<int>(c, 0));
+        vector<vector<int>> matrix(r);
 
         for (int i = 0; i < r; i++) {
+            matrix[i].assign(c, 0);
             for (int j = 0; j < c; j++) {
                 cin >> matrix[i][j];
             }
@@ -79,6 +70,9 @@ int main() {
         for (int i = 0; i < result.size(); ++i)
             cout << result[i] << " ";
         cout << endl;
+
+        cout << "~"
+             << "\n";
     }
     return 0;
 }
