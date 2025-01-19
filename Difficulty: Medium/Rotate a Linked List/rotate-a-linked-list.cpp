@@ -35,32 +35,36 @@ struct Node {
 };
 
 */
+
+
+
 class Solution {
   public:
-    // Function to rotate a linked list.
     Node* rotate(Node* head, int k) {
         // Your code here
-        Node* temp = head;
-        int n = 0;
-        while(temp){
-            n++;
-            temp = temp->next;
+        int len=1;           // calculate length
+        Node* temp=head;  //pointer to last element
+        while(temp->next!=NULL){
+            temp=temp->next;
+            len++;
         }
-        if(k == n) return head;
-        int cnt = 1;
-        temp = head;
-        while(cnt!=k){
-            cnt++;
-            temp = temp->next;
+        temp->next=head;// to make circular singly linked list
+        k=k%len;
+        Node* start=head;
+        while(k>0){ // to find start of rotated linked list
+            start=start->next;
+            k--;
         }
-        Node* temp2 = temp->next;
-        Node* node = temp2;
-        while(temp2->next!= NULL) temp2 = temp2->next;
-        temp2->next = head;
-        temp->next = NULL;
-        return node;
+        temp= start;
+        while(len>1){// to find start of rotated linked list
+            temp=temp->next;
+            len--;
+        }
+        temp->next=NULL;
+        return start;
     }
 };
+
 
 
 //{ Driver Code Starts.
@@ -100,6 +104,7 @@ int main() {
         Solution ob;
         head = ob.rotate(head, k);
         printList(head);
+        cout << "~\n";
     }
     return 1;
 }
