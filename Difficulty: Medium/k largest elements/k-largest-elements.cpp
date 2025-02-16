@@ -7,15 +7,19 @@ using namespace std;
 class Solution {
   public:
     vector<int> kLargest(vector<int>& arr, int k) {
+        // Your code here
         vector<int> result;
         
-        int n = arr.size();
+        int n = arr. size();
         
-        sort(rbegin(arr),rend(arr));
+        // sort(rbegin(arr), rend(arr));
+        sort(arr.begin(), arr.end(), greater<int>());
+        //time complexity : O(n log n)
         
-       for(int i=0; i<min(k,n); i++) {
-           result.push_back(arr[i]);
-       }
+        
+        for(int i=0; i<min(k,n); i++){
+            result.push_back(arr[i]);
+        }
         
         return result;
     }
