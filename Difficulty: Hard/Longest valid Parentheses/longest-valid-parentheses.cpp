@@ -6,37 +6,44 @@ using namespace std;
 
 
 // } Driver Code Ends
-// User function Template for C++
-
 
 class Solution {
   public:
-    int maxLength(string& str) {
+    int maxLength(string& s) {
         // code here
-        int n = str.size();
-        stack<int> st;
-        int ans = 0;
-        for(int i=0; i<n; i++)
-        {
-            if(str[i] == '(')
-            {
-                st.push(i);
-            }
-            else
-            {
-                if(!st.empty() && str[st.top()] == '(')
-                {
-                    st.pop();
-                    int first = st.empty() ? -1 : st.top();
-                    ans = max(ans,i-first);
-                }
-                else 
-                {
-                    st.push(i);
+        int maxlen = 0; 
+        vector<int>dp(s.size() , 0); 
+        /*
+            for some index (i) :=
+            dp[i] = 1 , a balanced parenthesis succeeds or preceeds with (i)
+        */
+        
+        stack<int>open;
+        for(size_t i = 0 ; i < s.size() ; i++) {
+            // if (i)th element is open parenthesis
+            if(s[i] == '(') {
+                open.push(i); // push (i) stack
+            } else {
+            // if (i)th element is close parenthesis
+            
+            // requires matching open paranthesis to balance
+                if(!open.empty()) {
+                    // increment by 1 at both open and close
+                    // parenthesis indexes
+                    dp[i] += 1; 
+                    dp[open.top()] += 1;
+                    open.pop(); // pop from stack 
                 }
             }
         }
-        return ans;
+        
+        // iterate through 'dp'
+        for(int j = 1 ; j < dp.size() ; j++) {
+            if(dp[j] == 0) continue; // if no balanced string starts at (j)
+            dp[j] += dp[j - 1]; // prefix sum
+            maxlen = std :: max(maxlen , dp[j]); // get max length of subsequent balanced string
+        }
+        return maxlen;
     }
 };
 
@@ -52,6 +59,9 @@ int main() {
 
         Solution ob;
         cout << ob.maxLength(S) << "\n";
+
+        cout << "~"
+             << "\n";
     }
     return 0;
 }
