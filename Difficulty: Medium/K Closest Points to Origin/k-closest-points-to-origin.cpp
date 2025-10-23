@@ -1,46 +1,26 @@
-//{ Driver Code Starts
-// Initial Template for C++
-#include <bits/stdc++.h>
-using namespace std;
-
-
-// } Driver Code Ends
 class Solution {
-public:
+  public:
     vector<vector<int>> kClosest(vector<vector<int>>& points, int k) {
-        sort(points.begin(), points.end(), [](vector<int>& a, vector<int>& b) {
-            return a[0] * a[0] + a[1] * a[1] < b[0] * b[0] + b[1] * b[1];
-        });
-
-        return vector<vector<int>>(points.begin(), points.begin() + k);
+        // code here
+        priority_queue<pair<int,pair<int,int>>> pq;
+        vector<vector<int>> res;
+        int n=points.size();
+        for(int i=0;i<n && i<k;i++){
+           int value = points[i][0]*points[i][0]+points[i][1]*points[i][1];
+           pq.push({value,{points[i][0],points[i][1]}});
+        }
+        for(int i=k;i<n;i++){
+             int value = points[i][0]*points[i][0]+points[i][1]*points[i][1];
+                 pq.push({value,{points[i][0],points[i][1]}});
+                 pq.pop();
+        }
+         n=pq.size();
+        for(int i=0;i<n;i++){
+            res.push_back({pq.top().second.first,pq.top().second.second});
+            pq.pop();
+        }
+        reverse(res.begin(),res.end());
+        return res;
     }
+
 };
-
-
-//{ Driver Code Starts.
-
-int main() {
-    int t;
-    cin >> t;
-    while (t--) {
-        int k;
-        cin >> k;
-        int n;
-        cin >> n;
-        vector<vector<int>> points(n, vector<int>(2));
-        for (int i = 0; i < n; i++) {
-            cin >> points[i][0] >> points[i][1];
-        }
-        Solution ob;
-        vector<vector<int>> ans = ob.kClosest(points, k);
-        sort(ans.begin(), ans.end());
-        for (const vector<int>& point : ans) {
-            cout << point[0] << " " << point[1] << endl;
-        }
-        cout << "~" << endl;
-    }
-
-    return 0;
-}
-
-// } Driver Code Ends
